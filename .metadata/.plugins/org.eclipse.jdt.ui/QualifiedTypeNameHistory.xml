@@ -8,4 +8,7 @@
 <fullyQualifiedTypeName name="jo.pojo.DAO"/>
 <fullyQualifiedTypeName name="jo.business.Court"/>
 <fullyQualifiedTypeName name="java.sql.Connection"/>
+<fullyQualifiedTypeName name="jo.business.Personne"/>
+<fullyQualifiedTypeName name="java.awt.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 </qualifiedTypeNameHistroy>

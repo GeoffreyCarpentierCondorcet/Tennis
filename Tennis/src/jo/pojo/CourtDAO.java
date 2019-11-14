@@ -3,7 +3,10 @@ package jo.pojo;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import jo.business.Court;
+import jo.business.Joueur;
 
 public class CourtDAO extends DAO<Court>{
 	public CourtDAO(Connection connect) {
@@ -31,5 +34,20 @@ public class CourtDAO extends DAO<Court>{
 			e.printStackTrace();
 		}
 		return court;
+	}
+	public ArrayList<Court> getListObjects() {
+		ArrayList<Court> a = new ArrayList<Court>();
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Court");
+					while(result.next())
+						a.add(new Court(result.getInt("id"), result.getString("nomCourt")));
+		}
+	
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return a;
 	}
 }

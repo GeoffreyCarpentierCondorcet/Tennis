@@ -1,0 +1,33 @@
+package jo.pojo;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import jo.business.Joueur;
+import jo.business.Personne;
+
+public class JoueurDAO extends DAO<Joueur>{
+	DAO<Personne> personneDAO;
+	public JoueurDAO(Connection connect) {
+		super(connect);
+		DAO<Personne> personneDAO = new PersonneDAO(connect);
+		
+	}
+	public boolean create(Joueur obj) {
+		return false;
+	}
+	public boolean delete(Joueur obj) {
+		return false;
+	}
+	public boolean update(Joueur obj) {
+		return false;
+	}
+	public Joueur find(int id) {
+		Joueur Joueur = new Joueur();
+		Personne p = personneDAO.find(id);
+	
+		Joueur = new Joueur(p.getId(), p.getNom(),p.getSexe());
+
+		return Joueur;
+	}
+}
