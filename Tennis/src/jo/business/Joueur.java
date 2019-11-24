@@ -11,6 +11,11 @@ public class Joueur extends Personne implements Serializable{
 		super(id, nom, sexe);
 		this.classement = classement;
 	}
+	public Joueur(String nom, String sexe, int classement) {
+		super(nom, sexe);
+		this.classement = classement;
+	}
+	
 	
 	public int getClassement() {
 		return classement;

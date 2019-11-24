@@ -1,11 +1,14 @@
 package jo.DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import jo.business.Joueur;
+import jo.business.Personne;
+
 
 public class JoueurDAO extends DAO<Joueur>{
 	public JoueurDAO(Connection connect) {
@@ -13,7 +16,40 @@ public class JoueurDAO extends DAO<Joueur>{
 		
 	}
 	public boolean create(Joueur obj) {
-		return false;
+		DAO<Personne> personneDAO =  new PersonneDAO(connect);
+		// 1. creation de l'objet parent "personne"
+		personneDAO.create(obj);
+		
+		// 2. recup de l'id de l'objet créé 
+		int id=0;		
+		try{
+			
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT id FROM Personne WHERE nom = '" + obj.getNom() + "'");
+					if(result.first())
+						id=result.getInt("id");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return false;
+		}
+		
+		// creation du joueur grâce à l'id récupéré
+		String query = "INSERT INTO Joueur (id, classement) VALUES (?,?)";
+		try {
+			PreparedStatement p = connect.prepareStatement(query);
+			p.setInt(1,id);
+			p.setInt(2,obj.getClassement());
+			p.executeUpdate();
+			return true;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
 	}
 	public boolean delete(Joueur obj) {
 		return false;

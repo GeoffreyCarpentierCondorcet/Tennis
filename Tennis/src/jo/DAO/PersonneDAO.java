@@ -1,6 +1,7 @@
 package jo.DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,7 +14,20 @@ public class PersonneDAO extends DAO<Personne>{
 		super(connect);		
 	}
 	public boolean create(Personne obj) {
-		return false;
+		String query = "INSERT INTO Personne (nom, sexe) VALUES (?,?)";
+		try {
+			PreparedStatement p = connect.prepareStatement(query);
+			p.setString(1,obj.getNom());
+			p.setString(2,obj.getSexe());
+			p.executeUpdate();
+			return true;
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	public boolean delete(Personne obj) {
 		return false;

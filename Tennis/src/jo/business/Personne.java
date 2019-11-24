@@ -13,6 +13,11 @@ public class Personne implements Serializable{
 		this.nom = nom;
 		this.sexe = sexe;
 	}
+	
+	public Personne(String nom, String sexe) {
+		this.nom = nom;
+		this.sexe = sexe;
+	}
 	public int getId() {
 		return id;
 	}
