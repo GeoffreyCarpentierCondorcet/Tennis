@@ -2,8 +2,8 @@ package jo.presentation;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import jo.DAO.*;
 import jo.business.*;
-import jo.pojo.*;
 
 public class Main {
 
@@ -25,7 +25,7 @@ public class Main {
 		DAO<Joueur> joueurDAO = new JoueurDAO(TennisConnection.getInstance());
 		for(int i = 1; i < 10; i++){
 			Joueur joueur = joueurDAO.find(i);
-			System.out.println("Joueur N°" + joueur.getId() + " - " + joueur.getNom() + " - " + joueur.getSexe());
+			System.out.println("Joueur N°" + joueur.getId() + " - " + joueur.getNom() + " - " + joueur.getSexe() + " - " + joueur.getClassement());
 		}
 		
 		System.out.println("\n*****************************\n");
@@ -33,7 +33,7 @@ public class Main {
 		
 		ArrayList<Joueur> aj = joueurDAO.getListObjects();
 		for(Joueur j : aj) {
-			System.out.println("Joueur N°" + j.getId() + " - " + j.getNom() + " - " + j.getSexe());
+			System.out.println("Joueur N°" + j.getId() + " - " + j.getNom() + " - " + j.getSexe()  + " - " + j.getClassement());
 		}
 		System.out.println("\n*****************************\n");
 

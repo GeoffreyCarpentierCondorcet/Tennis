@@ -3,7 +3,7 @@ import java.io.Serializable;
 
 public class Personne implements Serializable{
 	private static final long serialVersionUID=2;
-	private int id = 0;
+	private int id;
 	private String nom;
 	private String sexe;
 	
