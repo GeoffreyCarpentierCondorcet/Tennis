@@ -1,22 +1,33 @@
 package jo.business;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 
+import jo.DAO.ArbitreDAO;
+import jo.DAO.CourtDAO;
 import jo.DAO.DAO;
 import jo.DAO.JoueurDAO;
 import jo.DAO.TennisConnection;
 
 public class Ordonnancement {
 	ArrayList<Joueur> aj;
+	ArrayList<Arbitre> aa;
+	ArrayList<Court> ac;
 	ArrayList<Equipe> ae = new ArrayList<Equipe>();
+	ArrayList<Match> am = new ArrayList<Match>();
 	String type;
 	int nbrSetsGagnants;
+	
 	
 	public Ordonnancement(String type, int nbrSetsGagnants) {
 		this.type = type;
 		this.nbrSetsGagnants = nbrSetsGagnants;
+		loadListJoueurs();
+		loadListArbitres();
+		loadListCourts();	
 	}
 	
 	public ArrayList<Equipe> getAe() {
@@ -27,10 +38,22 @@ public class Ordonnancement {
 		return aj;
 	}
 	
-	public void getListJoueurs() {
+	private void loadListJoueurs() {
 		DAO<Joueur> joueurDAO = new JoueurDAO(TennisConnection.getInstance());
 		aj = joueurDAO.getListObjects();		
 	}
+	
+	private void loadListArbitres() {
+		DAO<Arbitre> arbitreDAO = new ArbitreDAO(TennisConnection.getInstance());
+		aa = arbitreDAO.getListObjects();
+	}
+	
+	private void loadListCourts() {
+		DAO<Court> courtDAO = new CourtDAO(TennisConnection.getInstance());
+		ac = courtDAO.getListObjects();
+	}
+	
+	
 	public void creationEquipes() {
 		Collections.shuffle(aj); // mélange aléatoire de la liste des joueurs
 		ArrayList<Joueur> a = new ArrayList<Joueur>();
@@ -62,13 +85,65 @@ public class Ordonnancement {
 				else a2.add(j);
 				
 			}
-			m = a.subList(0, 63);
-			f = a2.subList(0, 63);
+			m = a.subList(0, 64); // tronquage à 64 hommes
+			f = a2.subList(0, 64); // tronquage à 64 femmes
 			for(int i=0; i<m.size();i++) { // Attribution des équipes dans le tableau ae
 				ae.add(new Equipe(m.get(i),f.get(i)));
 			}
 			break;
+		}		
+	}
+	public void startBracket() {
+		ListIterator<Equipe> bracket = ae.listIterator();
+		int tour=1;
+		int flagCourt=0;
+		int compteur=0;
+		int flag=1;
+		int limite;
+		
+		limite = (ae.size()>64)? 7:6; // nbr tours varie en fonction du nombre d'equipes !
+		
+		while(tour<=limite) {
+			while(bracket.hasNext()) {
+				am.add(new Match(LocalDateTime.now(),tour, ac.get(flagCourt++), nbrSetsGagnants,bracket.next(),bracket.next()));
+				am.get(compteur).playMatch();
+				if(am.get(compteur).getResultat()[0]>am.get(compteur).getResultat()[1]) { // si E1 gagne
+					bracket.remove(); // E2 eluminée
+					System.out.println(compteur + " - " + am.get(compteur).getResultat()[0] + " " + am.get(compteur++).getResultat()[1]);
+				}
+				else {
+					System.out.println(compteur + " - " + am.get(compteur).getResultat()[0] + " " + am.get(compteur++).getResultat()[1]);
+					bracket.previous();
+					bracket.remove(); // E1 eluminée 	
+				}
+				if(flagCourt==7) { // qd 8 matchs ont été joués
+					flagCourt=0;
+				}
+			}
+			
+			while(bracket.hasPrevious()) bracket.previous(); // revenir au debut de l'iterator
+			
+			
+			while(bracket.hasNext()) {
+				System.out.println("tour " + tour + " vainqueur " + flag++);
+				System.out.println("-------------------------------------");
+				for(Joueur j : bracket.next().getA()) {
+					System.out.print(j.getNom()+ " ");
+				}
+				System.out.println("\n-----------------------------------------------------------------");
+			}
+			while(bracket.hasPrevious()) bracket.previous(); // revenir au debut de l'iterator
+			
+			
+			tour++;
+			
+			
+			
+			
 		}
+		
+		
+		
 		
 	}
 }

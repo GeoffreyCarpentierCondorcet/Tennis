@@ -51,20 +51,16 @@ public class Match {
 		/* si score à 40/40
 		 * -------------------------------------------------*/
 		
-		int avantage=0; // 0-> egalite, 1-> avantage equipe 1, 2-> avantage equipe 2
+		int avantage=0; // 0-> egalite, 1-> avantage equipe 1, -1> avantage equipe 2
 		
-		while(true) {
-			if(playPoint()) { // si equipe 1 marque
-				if(avantage==0) avantage=1; 
-				else if(avantage==1) return true; // equipe 1 gagne le jeu
-				else avantage = 0;
-			}
-			else { // si equipe 2 marque
-				if(avantage==0) avantage=2; 
-				else if(avantage==1) avantage = 0;
-				else return false; // equipe 2 gagne le jeu
-			}	
+		while(avantage<2 && avantage>-2) {
+			if(playPoint()) avantage++; // si equipe 1 marque
+			else avantage--; // si equipe 2 marque
 		}
+		if(avantage==2) return true; // equipe 1 gagne le jeu
+		else return false; // equipe 2 gagne le jeu
+		
+		
 		
 	}
 	private boolean playSet() {
@@ -84,8 +80,7 @@ public class Match {
 		
 		/* si score à  6/6 et pas dernier set -> tie-break
 		 * -------------------------------------------------*/
-		if((nbrSetsGagnants==2 && resultat[0]+resultat[1] < nbrSetsGagnants) 
-				|| (nbrSetsGagnants==3 && resultat[0]+resultat[1] <= nbrSetsGagnants) ) {		
+		if(resultat[0]+resultat[1]<nbrSetsGagnants*2-2 ) {		
 			int pointsE1=0;
 			int pointsE2=0;
 
@@ -119,16 +114,9 @@ public class Match {
 				if(playJeu()) jeuxE1++;
 				else jeuxE2++;
 			}
-			if(jeuxE1>jeuxE2) {
-				System.out.println(jeuxE1 + " " + jeuxE2);
-				return true; // equipe 1 gagne le set
-			}
-			else { 
-				System.out.println(jeuxE1 + " " + jeuxE2);
-				return false;// equipe 2 gagne le set	
-			}
-		}
-		
+			if(jeuxE1>jeuxE2) return true; // equipe 1 gagne le set
+			else return false;// equipe 2 gagne le set	
+		}	
 	}
 	public void playMatch() {
 		while(resultat[0]<nbrSetsGagnants && resultat[1]<nbrSetsGagnants) {

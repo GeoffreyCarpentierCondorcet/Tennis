@@ -1,0 +1,121 @@
+package jo.business;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+
+import jo.DAO.ArbitreDAO;
+import jo.DAO.CourtDAO;
+import jo.DAO.DAO;
+import jo.DAO.JoueurDAO;
+import jo.DAO.TennisConnection;
+
+public class Ordonnancement {
+	ArrayList<Joueur> aj;
+	ArrayList<Arbitre> aa;
+	ArrayList<Court> ac;
+	ArrayList<Equipe> ae = new ArrayList<Equipe>();
+	ArrayList<Match> am = new ArrayList<Match>();
+	String type;
+	int nbrSetsGagnants;
+	
+	
+	public Ordonnancement(String type, int nbrSetsGagnants) {
+		this.type = type;
+		this.nbrSetsGagnants = nbrSetsGagnants;
+		loadListJoueurs();
+		loadListArbitres();
+		loadListCourts();	
+	}
+	
+	public ArrayList<Equipe> getAe() {
+		return ae;
+	}
+	
+	public ArrayList<Joueur> getAj() {
+		return aj;
+	}
+	
+	private void loadListJoueurs() {
+		DAO<Joueur> joueurDAO = new JoueurDAO(TennisConnection.getInstance());
+		aj = joueurDAO.getListObjects();		
+	}
+	
+	private void loadListArbitres() {
+		DAO<Arbitre> arbitreDAO = new ArbitreDAO(TennisConnection.getInstance());
+		aa = arbitreDAO.getListObjects();
+	}
+	
+	private void loadListCourts() {
+		DAO<Court> courtDAO = new CourtDAO(TennisConnection.getInstance());
+		ac = courtDAO.getListObjects();
+	}
+	
+	
+	public void creationEquipes() {
+		Collections.shuffle(aj); // mélange aléatoire de la liste des joueurs
+		ArrayList<Joueur> a = new ArrayList<Joueur>();
+			
+		switch(type) {
+		case "messieurs" : 
+			
+			for(Joueur j : aj) {
+				if(j.getSexe().equals("m")) a.add(j);
+			}
+			for(Joueur j : a) { // Attribution des équipes dans le tableau ae
+				ae.add(new Equipe(j));
+			}
+			break;
+		case "dames" : 			
+			for(Joueur j : aj) {
+				if(j.getSexe().equals("f")) a.add(j);
+			}
+			for(Joueur j : a) { // Attribution des équipes dans le tableau ae
+				ae.add(new Equipe(j));
+			}
+			break;
+		case "double" : 
+			ArrayList<Joueur> a2 = new ArrayList<Joueur>();
+			List<Joueur> m;
+			List<Joueur> f;
+			for(Joueur j : aj) {
+				if(j.getSexe().equals("m"))a.add(j);
+				else a2.add(j);
+				
+			}
+			m = a.subList(0, 63); // tronquage à 64 hommes
+			f = a2.subList(0, 63); // tronquage à 64 femmes
+			for(int i=0; i<m.size();i++) { // Attribution des équipes dans le tableau ae
+				ae.add(new Equipe(m.get(i),f.get(i)));
+			}
+			break;
+		}		
+	}
+	public void startBracket() {
+		ListIterator<Equipe> bracket = ae.listIterator();
+		int tour=1;
+		int flagCourt=0;
+		int compteur=0;
+		while(bracket.hasNext()) {
+			am.add(new Match(LocalDateTime.now(),tour, ac.get(flagCourt++), nbrSetsGagnants,bracket.next(),bracket.next()));
+			
+				System.out.println("ok");
+			
+			
+			if(flagCourt==7) { // qd 8 matchs ont été joués
+				flagCourt=0;
+			}
+		}
+		int flag=0;
+		while(bracket.hasNext()) {
+			System.out.println("vainqueur " + flag++);
+			System.out.println("-------------------------------------");
+			for(Joueur j : bracket.next().getA()) {
+				System.out.print(j.getNom()+ " ");
+			}
+			System.out.println("-----------------------------------------------------------------");
+		}
+	}
+}
