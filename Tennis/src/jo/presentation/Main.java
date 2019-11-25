@@ -1,6 +1,5 @@
 package jo.presentation;
 import java.sql.Connection;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -108,9 +107,13 @@ public class Main {
 		m.playMatch();
 		System.out.println(m.getResultat()[0]+"/" + m.getResultat()[1]);*/
 		
-		Ordonnancement o = new Ordonnancement("dames",2);
+		Ordonnancement o = new Ordonnancement("double",2, LocalDateTime.of(2020, 5, 18, 8, 0));  // debut du tournoi le 18 mai 2020 !
 		o.creationEquipes();
 		o.startBracket();
+		int i=1;
+		for(Match m : o.getAm()) {
+			System.out.println(i++ + ")  "  + m.getDate() + " | " + m.getDuree() + " | " + m.getCourt().getId());
+		}
 	}
 	
 	

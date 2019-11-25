@@ -5,29 +5,43 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 public class Match {
-	LocalDateTime date;
-	int duree;
-	int tour;
+	Equipe[] equipe = new Equipe[2];
 	int[] resultat = new int[2];
 	Court court;
-	Equipe[] equipe = new Equipe[2];
+	Arbitre arbitre;
+	LocalDateTime date;
+	int duree; // en seconde
+	int tour;
 	Random r = new Random();
 	int nbrSetsGagnants;
 	
-	public Match(LocalDateTime date, int tour, Court court,int nbrSetsGagnants,  Equipe e1, Equipe e2) {
+	public Match(LocalDateTime date, int tour, Court court,int nbrSetsGagnants, Arbitre arbitre, Equipe e1, Equipe e2) {
 		this.date = date;
 		this.tour = tour;
 		this.court = court;
 		this.nbrSetsGagnants = nbrSetsGagnants;
+		this.arbitre = arbitre;
 		equipe[0] = e1;
 		equipe[1] = e2;
 	}
 	
 	public int[] getResultat() {
 		return resultat;
+	}	
+	public int getDuree() {
+		return duree;
+	}
+	public LocalDateTime getDate() {
+		return date;
+	}
+	public Court getCourt() {
+		return court;
 	}
 	
-	private boolean playPoint() {
+	/* attribution des points, jeux et set :  true -> equipe1 marque, false -> equipe2 marque */
+	
+	private boolean playPoint() { 
+		duree+=r.nextInt(60-10 +1)+10; // 10 à 60 sec par points
 		if(r.nextInt(2)==0) return true; //  equipe 1 marque le point
 		else return false; //  equipe 2 marque le point
 
@@ -59,9 +73,7 @@ public class Match {
 		}
 		if(avantage==2) return true; // equipe 1 gagne le jeu
 		else return false; // equipe 2 gagne le jeu
-		
-		
-		
+				
 	}
 	private boolean playSet() {
 		int jeuxE1=0;
@@ -76,8 +88,7 @@ public class Match {
 			if(jeuxE1>6) return true; // equipe 1 gagne le set
 			if(jeuxE2>6) return false; // // equipe 2 gagne le set
 		}
-		
-		
+				
 		/* si score à  6/6 et pas dernier set -> tie-break
 		 * -------------------------------------------------*/
 		if(resultat[0]+resultat[1]<nbrSetsGagnants*2-2 ) {		
@@ -92,7 +103,7 @@ public class Match {
 			}
 			
 			if(pointsE1-pointsE2>=2) return true; // equipe 1 gagne le set
-			if(pointsE1-pointsE2<=-2) return false; // equipe 2 gagne le set
+			else if(pointsE1-pointsE2<=-2) return false; // equipe 2 gagne le set
 			
 			
 			/* si un joueur a 7, generation points tant que pas 2 points d'écart
@@ -118,10 +129,12 @@ public class Match {
 			else return false;// equipe 2 gagne le set	
 		}	
 	}
+	
 	public void playMatch() {
 		while(resultat[0]<nbrSetsGagnants && resultat[1]<nbrSetsGagnants) {
 			if(playSet()) resultat[0]++;
 			else resultat[1]++;
 		}
+		if (duree>13200) duree = 14400 ; // temps max par match : 3h40 -> 3 matchs/court par jour tt les 4 h j'usqu'en 1/8 eme de finale
 	}
 }

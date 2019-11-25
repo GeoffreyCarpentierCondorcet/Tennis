@@ -20,14 +20,16 @@ public class Ordonnancement {
 	ArrayList<Match> am = new ArrayList<Match>();
 	String type;
 	int nbrSetsGagnants;
+	LocalDateTime date;
 	
 	
-	public Ordonnancement(String type, int nbrSetsGagnants) {
+	public Ordonnancement(String type, int nbrSetsGagnants, LocalDateTime date) {
 		this.type = type;
 		this.nbrSetsGagnants = nbrSetsGagnants;
 		loadListJoueurs();
 		loadListArbitres();
-		loadListCourts();	
+		loadListCourts();
+		this.date=date;
 	}
 	
 	public ArrayList<Equipe> getAe() {
@@ -36,6 +38,10 @@ public class Ordonnancement {
 	
 	public ArrayList<Joueur> getAj() {
 		return aj;
+	}
+	
+	public ArrayList<Match> getAm() {
+		return am;
 	}
 	
 	private void loadListJoueurs() {
@@ -94,38 +100,65 @@ public class Ordonnancement {
 		}		
 	}
 	public void startBracket() {
-		ListIterator<Equipe> bracket = ae.listIterator();
+		ListIterator<Equipe> bracket = ae.listIterator(); // on supprime au fur et à mesure les joueurs du bracket 
 		int tour=1;
-		int flagCourt=0;
-		int compteur=0;
-		int flag=1;
+		int flag=0; // court et arbitre
+		int compteur=0; // nbr matchs joués
+		int flagzzzz=1;
 		int limite;
+		
 		
 		limite = (ae.size()>64)? 7:6; // nbr tours varie en fonction du nombre d'equipes !
 		
 		while(tour<=limite) {
 			while(bracket.hasNext()) {
-				am.add(new Match(LocalDateTime.now(),tour, ac.get(flagCourt++), nbrSetsGagnants,bracket.next(),bracket.next()));
-				am.get(compteur).playMatch();
+				am.add(new Match(date,tour, ac.get(flag), nbrSetsGagnants,aa.get(flag++),bracket.next(),bracket.next()));
+				am.get(compteur).playMatch(); // lancement du match
+				
 				if(am.get(compteur).getResultat()[0]>am.get(compteur).getResultat()[1]) { // si E1 gagne
 					bracket.remove(); // E2 eluminée
 					System.out.println(compteur + " - " + am.get(compteur).getResultat()[0] + " " + am.get(compteur++).getResultat()[1]);
 				}
-				else {
+				else { // si E2 gagne
 					System.out.println(compteur + " - " + am.get(compteur).getResultat()[0] + " " + am.get(compteur++).getResultat()[1]);
 					bracket.previous();
 					bracket.remove(); // E1 eluminée 	
 				}
-				if(flagCourt==7) { // qd 8 matchs ont été joués
-					flagCourt=0;
+							
+				if(flag==8) { // qd 8 matchs ont été joués 
+					if((compteur)%24!=0) date=date.plusHours(4); // 3 matchs par court par jour à 8, 12, 16h -> 24 matchs par jours avant les 8eme de finale
+					else date=date.plusHours(16); //qd 3 matchs joues sur le meme court par jour on rejoue le lendemain à 8h
+					flag=0; 
 				}
+				
+				/* 1/4 de finale
+				 * ---------------------------*/
+				else if((limite==6 && tour == 4) || limite==7 && tour ==5) { 
+					// 4 matchs/jour -> 2 matchs à 8h du mat sur les courts 1, 2 et 2 matchs à 16h sur les courts 3, et 4
+					if(flag==2) date=date.plusHours(8);
+					else if(flag==4) {
+						date=date.plusHours(16);
+						flag=0;
+					}
+				}
+				
+				/* 1/2 finale
+				 * ---------------------------*/
+				else if((limite==6 && tour == 5) || limite==7 && tour ==6) { 
+					// 2 matchs/jour -> 1 match à 8h du mat sur le court 1, et 1 autre à 16h sur le court 2
+					date=date.plusHours(8);
+					if(flag==2) {
+						date=date.plusHours(22); // finale le landemain à 14h sur court 1
+						flag=0;
+					}
+				}	
 			}
 			
 			while(bracket.hasPrevious()) bracket.previous(); // revenir au debut de l'iterator
 			
 			
 			while(bracket.hasNext()) {
-				System.out.println("tour " + tour + " vainqueur " + flag++);
+				System.out.println("tour " + tour + " vainqueur " + flagzzzz++);
 				System.out.println("-------------------------------------");
 				for(Joueur j : bracket.next().getA()) {
 					System.out.print(j.getNom()+ " ");
@@ -136,14 +169,8 @@ public class Ordonnancement {
 			
 			
 			tour++;
-			
-			
-			
-			
+	
 		}
-		
-		
-		
-		
+	
 	}
 }
