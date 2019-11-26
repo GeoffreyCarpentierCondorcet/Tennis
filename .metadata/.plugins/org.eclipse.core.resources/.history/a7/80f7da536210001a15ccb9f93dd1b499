@@ -29,7 +29,6 @@ public class Ordonnancement {
 		loadListJoueurs();
 		loadListArbitres();
 		loadListCourts();
-		creationEquipes();
 		this.date=date;
 	}
 	
@@ -61,7 +60,7 @@ public class Ordonnancement {
 	}
 	
 	
-	private void creationEquipes() {
+	public void creationEquipes() {
 		Collections.shuffle(aj); // mélange aléatoire de la liste des joueurs
 		ArrayList<Joueur> a = new ArrayList<Joueur>();
 			
