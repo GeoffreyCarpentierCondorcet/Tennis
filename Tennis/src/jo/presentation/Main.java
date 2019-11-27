@@ -112,10 +112,10 @@ public class Main {
 		int i=1;
 		for(Match m : o.getAm()) {
 			System.out.println(i++ + ")  "  + m.getDate() + " | " + m.getDuree() + " | " + m.getCourt().getId());
-		}*/
+		}
 		
 		Tournoi t = new Tournoi(LocalDateTime.of(2020, 5, 18, 8, 0));
-		t.startAllBrackets();
+		t.startAllBrackets();*/
 	}
 	
 	

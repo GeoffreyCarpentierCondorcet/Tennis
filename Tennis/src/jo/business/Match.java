@@ -37,6 +37,12 @@ public class Match {
 	public Court getCourt() {
 		return court;
 	}
+	public Equipe[] getEquipes() {
+		return equipe;
+	}
+	public int getTour() {
+		return tour;
+	}
 	
 	/* attribution des points, jeux et set :  true -> equipe1 marque, false -> equipe2 marque */
 	

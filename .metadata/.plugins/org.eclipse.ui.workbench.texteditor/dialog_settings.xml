@@ -8,6 +8,10 @@
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="absol"/>
+			<item value="setBounds"/>
+			<item value="JframeGroupeA"/>
+			<item value="2"/>
 			<item value="128"/>
 			<item value="sys"/>
 			<item value="sysout"/>
@@ -18,6 +22,7 @@
 			<item value="eleve"/>
 		</list>
 		<list key="replacehistory">
+			<item value="JframeGroupe"/>
 			<item value="Arbitre"/>
 			<item value="Personne"/>
 			<item value="Joueur"/>

@@ -1,0 +1,94 @@
+package jo.presentation;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.time.LocalDateTime;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import jo.business.Tournoi;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class Acceuil extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Acceuil frame = new Acceuil();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Acceuil() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 808, 628);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		Tournoi t = new Tournoi(LocalDateTime.of(2020, 5, 18, 8, 0));
+		t.startAllBrackets();
+		
+
+		JButton btn_resultatMessieurs = new JButton("resultats messieurs");
+		btn_resultatMessieurs.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent arg0) {
+				}
+			});
+		JButton btn_resultatDames = new JButton("resultats dames");
+		btn_resultatDames.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent arg0) {
+				}
+			});
+		JButton btn_resultatDoubleMessieurs = new JButton("resultats double messieurs");
+		btn_resultatDoubleMessieurs.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent arg0) {
+				}
+			});
+		JButton btn_commencerTournoi = new JButton("Commencer tournoi");
+		btn_commencerTournoi.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent arg0) {
+					btn_resultatMessieurs.setVisible(true);
+					btn_resultatDames.setVisible(true);
+					btn_resultatDoubleMessieurs.setVisible(true);
+				}
+			});
+		
+		
+		
+		btn_commencerTournoi.setBounds(302, 100, 160, 25);
+		btn_resultatMessieurs.setBounds(302, 326, 160, 25);
+		btn_resultatDames.setBounds(302, 364, 160, 25);
+		btn_resultatDoubleMessieurs.setBounds(286, 402, 194, 25);
+		
+		btn_resultatMessieurs.setVisible(false);
+		btn_resultatDames.setVisible(false);
+		btn_resultatDoubleMessieurs.setVisible(false);
+		
+		
+		contentPane.add(btn_commencerTournoi);
+		contentPane.add(btn_resultatMessieurs);
+		contentPane.add(btn_resultatDames);
+		contentPane.add(btn_resultatDoubleMessieurs);
+			
+		
+	}
+}

@@ -1,0 +1,137 @@
+package jo.presentation;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+import jo.business.Equipe;
+import jo.business.Joueur;
+import jo.business.Match;
+import jo.business.Ordonnancement;
+import jo.business.Tournoi;
+
+import javax.swing.JTabbedPane;
+
+public class JframeMenu extends JFrame {
+
+	private JPanel contentPane;
+	Tournoi t;
+	//private ArrayList<ArrayList<ArrayList<Match>>> aTours= new ArrayList<ArrayList<ArrayList<Match>>> ();  
+	
+	// pr generer les brackets il  faut 5 tableaux pr chaque ordonnancement, 
+	// dans chacun de ces tableaux il faut autant de tableaux pour le nombre de tours de chaque ordannancement
+	// dans chacun de ces tableaux setrouvera une liste de match correspondant aux tours
+	// -> on a donc 5 tableaux (ordonnancement) de tableaux ( tours) de tableaux (matchs)
+	
+	private ArrayList<JLabel> aJLabel = new ArrayList<JLabel>();
+	private ArrayList<ArrayList<JPanel>> aJPanel = new ArrayList<ArrayList<JPanel>>();
+	private int w=80;
+	private int h=25;
+	private int compteur=0;
+	
+
+	/**
+	 * Launch the application.
+	 */
+
+
+	/**
+	 * Create the frame.
+	 */
+	public JframeMenu(JframeAcceuil frameAcceuil, Tournoi t) {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1000, 700);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		setVisible(true);
+		
+		this.t=t;
+		
+		JTabbedPane tabbedPane0 = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane0.setBounds(12, 76, 958, 564);
+		
+		String[] TitreOrdonnancement= { "Messieurs", "Dames", "Double Mrs", "Double Mme","Double Mixte" };
+		
+		ArrayList<JTabbedPane> aJTab= new ArrayList<JTabbedPane>();
+		for(int i = 0 ; i<5; i++) {
+			aJTab.add(new JTabbedPane(JTabbedPane.TOP));
+			aJTab.get(i).setBounds(12, 13, 929, 508);
+			aJTab.get(i).addTab("toto", null, new JPanel(), null);
+		}
+		
+		ArrayList<JPanel> aJPnl= new ArrayList<JPanel>();
+		for(int i = 0 ; i<5; i++) {
+			aJPnl.add(new JPanel());
+			aJPnl.get(i).setLayout(null);
+			aJPnl.get(i).add(aJTab.get(i));
+			tabbedPane0.addTab(TitreOrdonnancement[i], null, aJPnl.get(i), null);
+		}
+		
+		contentPane.add(tabbedPane0);
+		
+	}
+	
+		
+		
+
+		/*
+		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane_1.setBounds(12, 13, 929, 508);
+		panel_1.add(tabbedPane_1);
+		
+		
+	}
+	/*private void drawBrackets() {
+		int compteurO=0; // ordonnancement
+		int compteurT=1; // tour
+		boolean flag=true; // pr instancier qu'une fois le tableau de tour par tour !
+		for(Ordonnancement o : t.getAo()) {
+			aTours.add(new ArrayList<ArrayList<Match>>());
+			for(Match m : o.getAm()) {
+				if (flag){
+					if(m.getTour()==compteurT) {
+						aTours.get(compteurO).add(new ArrayList<Match>());
+					}
+				}
+			}
+		}
+		
+		
+		
+		for(Ordonnancement o : t.getAo()) {
+			drawTour(o.getAm(), 10, 60, 5);
+		}
+	}*/
+	
+	private void drawTour(List<Match> lm,JPanel jp, int x, int y, int intervale){	
+		for(Match m :lm) {			
+			for(Equipe e : m.getEquipes()) {
+				if(e.getA().size()==1) {
+					aJLabel.add(new JLabel(e.getA().get(0).getNom()));
+					aJLabel.get(compteur).setBounds(x, y, w, h);					
+				}
+				else {
+					aJLabel.add(new JLabel(e.getA().get(0).getNom() + " / " + e.getA().get(1).getNom()));
+					aJLabel.get(compteur).setBounds(x, y, w+80, h);
+				}
+				
+				aJLabel.get(compteur).setBorder(new LineBorder(new Color(0, 0, 0)));
+				contentPane.add(aJLabel.get(compteur));
+				compteur++;	
+				y+=25;	
+			}	
+			y+=intervale;
+		}
+	}
+	
+}

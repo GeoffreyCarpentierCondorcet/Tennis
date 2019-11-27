@@ -1,0 +1,98 @@
+package jo.presentation;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
+
+import jo.business.Equipe;
+import jo.business.Joueur;
+import jo.business.Match;
+import jo.business.Ordonnancement;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+
+public class JframeMessieurs extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	/*public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					messieurs frame = new messieurs();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}*/
+
+	/**
+	 * Create the frame.
+	 */
+	public JframeMessieurs(JframeAcceuil frameAcceuil, Ordonnancement o) {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 800, 600);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		setVisible(true);		
+		JframeMessieurs thisframe = this;
+		
+		int compteur=0;
+		int x=10; // position
+		int y=10; // position
+		int w=100; 
+		int h=25;
+		
+		ArrayList<JLabel> aJLabel = new ArrayList<JLabel>();
+		for(Match m : o.getAm()) {			
+			for(Equipe e : m.getEquipes()) {
+				if(e.getA().size()==1) {
+					aJLabel.add(new JLabel(e.getA().get(0).getNom()));
+					aJLabel.get(compteur).setBounds(x, y, w, h);
+					
+				}
+				else {
+					aJLabel.add(new JLabel(e.getA().get(0).getNom() + " / " + e.getA().get(1).getNom()));
+					aJLabel.get(compteur).setBounds(x, y, w+100, h);
+				}
+				
+				aJLabel.get(compteur).setBorder(new LineBorder(new Color(0, 0, 0)));
+				contentPane.add(aJLabel.get(compteur));
+				compteur++;	
+				y+=25;	
+			}
+				
+		}
+		
+		
+		JButton btn_retourAcceuil = new JButton("Acceuil");
+		btn_retourAcceuil.setBounds(635, 25, 97, 25);
+		
+		btn_retourAcceuil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frameAcceuil.setVisible(true);
+				thisframe.dispose();			
+			}
+		});
+
+		contentPane.add(btn_retourAcceuil);
+		
+			
+	}
+}
