@@ -57,16 +57,36 @@ public class JframeBracket extends JFrame {
 		JButton btn_groupeA = new JButton("groupe A");
 		btn_groupeA.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JframeGroupe frameA = new JframeGroupe(o.getAm().subList(0, 16), o.getAm().subList(64, 72),o.getAm().subList(96, 100), o.getAm().subList(112, 114), o.getAm().subList(120, 121)); 
+				if(o.getAm().size()>64) { // si 128 equipes 
+					JframeGroupe frameA = new JframeGroupe(o.getAm().subList(0, 16), o.getAm().subList(64, 72),o.getAm().subList(96, 100), o.getAm().subList(112, 114), o.getAm().subList(120, 121)); 
+				}
+				else {JframeGroupe frameA = new JframeGroupe(o.getAm().subList(0, 16), o.getAm().subList(32, 40),o.getAm().subList(48, 52), o.getAm().subList(56, 58), o.getAm().subList(60, 61)); }
 			}
 		});
 		JButton btn_groupeB = new JButton("groupe B");
 		btn_groupeB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JframeGroupe frameB = new JframeGroupe(o.getAm().subList(16, 32), o.getAm().subList(72, 80), o.getAm().subList(100, 104), o.getAm().subList(114, 116), o.getAm().subList(121, 122)); 
+				if(o.getAm().size()>64) { // si 128 equipes 
+					JframeGroupe frameB = new JframeGroupe(o.getAm().subList(16, 32), o.getAm().subList(72, 80), o.getAm().subList(100, 104), o.getAm().subList(114, 116), o.getAm().subList(121, 122));
+					
+				}
+				else {JframeGroupe frameA = new JframeGroupe(o.getAm().subList(16, 32), o.getAm().subList(40, 48),o.getAm().subList(52, 56), o.getAm().subList(58, 60), o.getAm().subList(61, 62));}
 			}
 		});
-		JButton btn_top8 = new JButton("top 8");
+		
+		JButton btn_top = new JButton("top 4");
+		if(o.getAm().size()<=64) btn_top.setText("finale");
+		btn_top.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(o.getAm().size()>64) { // si 128 equipes
+					JframeTop4 frametop4 = new JframeTop4(o.getAm().subList(124, 126), o.getAm().subList(126, 127)); 
+				}	
+				else { // si 64 equipes
+					JframeFinalDouble frameFinalDouble = new JframeFinalDouble(o.getAm().get(62)); 
+					
+				}
+			}
+		});
 		
 		
 		if(o.getAm().size()>64) {	// 2 groupes supplémentaires pour les tournois de 128 equipes
@@ -92,10 +112,10 @@ public class JframeBracket extends JFrame {
 		
 		btn_groupeA.setBounds(100, 100, 100, 25);
 		btn_groupeB.setBounds(100, 150, 100, 25);
-		btn_top8.setBounds(100, 400, 100, 25);
+		btn_top.setBounds(100, 400, 100, 25);
 		contentPane.add(btn_groupeA);
 		contentPane.add(btn_groupeB);
-		contentPane.add(btn_top8);
+		contentPane.add(btn_top);
 
 		
 		

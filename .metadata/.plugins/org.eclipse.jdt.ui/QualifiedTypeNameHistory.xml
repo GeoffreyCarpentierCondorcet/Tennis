@@ -27,7 +27,11 @@
 <fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="jo.business.Tournoi"/>
 <fullyQualifiedTypeName name="jo.business.Ordonnancement"/>
+<fullyQualifiedTypeName name="jo.business.Joueur"/>
 <fullyQualifiedTypeName name="jo.business.Match"/>
 <fullyQualifiedTypeName name="jo.business.Equipe"/>
-<fullyQualifiedTypeName name="jo.business.Joueur"/>
+<fullyQualifiedTypeName name="javax.swing.SwingConstants"/>
+<fullyQualifiedTypeName name="java.awt.event.MouseAdapter"/>
+<fullyQualifiedTypeName name="java.awt.event.MouseEvent"/>
+<fullyQualifiedTypeName name="java.time.format.DateTimeFormatter"/>
 </qualifiedTypeNameHistroy>

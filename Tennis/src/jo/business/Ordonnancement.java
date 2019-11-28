@@ -66,8 +66,7 @@ public class Ordonnancement {
 		ArrayList<Joueur> a = new ArrayList<Joueur>();
 			
 		switch(type) {
-		case "messieurs" : 
-			
+		case "messieurs" : 			
 			for(Joueur j : aj) {
 				if(j.getSexe().equals("m")) a.add(j);
 			}
@@ -83,7 +82,23 @@ public class Ordonnancement {
 				ae.add(new Equipe(j));
 			}
 			break;
-		case "double" : 
+		case "doubleMessieurs" : 
+			for(Joueur j : aj) {
+				if(j.getSexe().equals("m"))a.add(j);	
+			}
+			for(int i=0, j=64; i<64; i++, j++) {
+				ae.add(new Equipe(a.get(i),a.get(j)));
+			}
+			break;
+		case "doubleDames" : 
+			for(Joueur j : aj) {
+				if(j.getSexe().equals("f"))a.add(j);	
+			}
+			for(int i=0, j=64; i<64; i++, j++) {
+				ae.add(new Equipe(a.get(i),a.get(j)));
+			}
+			break;
+		case "doubleMixte" : 
 			ArrayList<Joueur> a2 = new ArrayList<Joueur>();
 			List<Joueur> m;
 			List<Joueur> f;

@@ -1,0 +1,70 @@
+package jo.presentation;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+import jo.business.Equipe;
+import jo.business.Match;
+
+public class JframeTop4 extends JFrame {
+	private JPanel contentPane;
+	
+	private ArrayList<List<Match>> aTours= new ArrayList<List<Match>>();
+	private ArrayList<JLabel> aJLabel = new ArrayList<JLabel>();
+	private int compteur=0;
+	private int w=80;
+	private int h=25;
+	
+	
+	public JframeTop4(List<Match> tour1, List<Match> tour2) {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		setVisible(true);
+		
+		aTours.add(tour1);
+		aTours.add(tour2);
+		
+		int x=10; // position
+		int y=60; // position
+		int w=80; 
+		int h=25;  
+		drawTour(aTours.get(0), 10, 60, 5);
+		drawTour(aTours.get(1), 310, 87, 60);
+	}
+	
+	private void drawTour(List<Match> lm, int x, int y, int intervale){	
+		for(Match m :lm) {			
+			for(Equipe e : m.getEquipes()) {
+				if(e.getA().size()==1) {
+					aJLabel.add(new JLabel(e.getA().get(0).getNom()));
+					aJLabel.get(compteur).setBounds(x, y, w, h);					
+				}
+				else {
+					aJLabel.add(new JLabel(e.getA().get(0).getNom() + " / " + e.getA().get(1).getNom()));
+					aJLabel.get(compteur).setBounds(x, y, w+80, h);
+				}
+				
+				aJLabel.get(compteur).setBorder(new LineBorder(new Color(0, 0, 0)));
+				contentPane.add(aJLabel.get(compteur));
+				compteur++;	
+				y+=25;	
+			}	
+			y+=intervale;
+		}
+	}
+
+}

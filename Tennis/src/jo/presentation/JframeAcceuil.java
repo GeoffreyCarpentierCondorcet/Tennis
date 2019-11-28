@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 public class JframeAcceuil extends JFrame {
 
 	private JPanel contentPane;
+	private Tournoi t;
 
 	/**
 	 * Launch the application.
@@ -44,22 +45,28 @@ public class JframeAcceuil extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		JframeAcceuil thisframe = this; // permet d'envoyer l'objet dans un autre objet afin de le recup par la suite
-		
-		Tournoi t = new Tournoi(LocalDateTime.of(2020, 5, 18, 8, 0));
-		
+			
 		JButton btn_commencerTournoi = new JButton("Commencer tournoi");
 		JButton btn_resultatMessieurs = new JButton("resultats messieurs");
 		JButton btn_resultatDames = new JButton("resultats dames");
 		JButton btn_resultatDoubleMessieurs = new JButton("resultats double messieurs");
+		JButton btn_resultatDoubleDames = new JButton("resultats double dames");
+		JButton btn_resultatDoubleMixte = new JButton("resultats double mixte");
+		
 		btn_commencerTournoi.addActionListener(new ActionListener() { 
+			
 			public void actionPerformed(ActionEvent arg0) {
+				t = new Tournoi(LocalDateTime.of(2020, 5, 18, 8, 0));
 					t.startAllBrackets();
 					
+					btn_commencerTournoi.setText("generer un autre tournoi");
+					btn_commencerTournoi.setBounds(282, 100, 200, 25);
 					btn_resultatMessieurs.setVisible(true);
 					btn_resultatDames.setVisible(true);
 					btn_resultatDoubleMessieurs.setVisible(true);
-					JframeMenu frameM = new JframeMenu(thisframe,t);
-					thisframe.setVisible(false);
+					btn_resultatDoubleDames.setVisible(true);
+					btn_resultatDoubleMixte.setVisible(true);
+					
 				}
 			});
 	
@@ -72,29 +79,51 @@ public class JframeAcceuil extends JFrame {
 		
 		btn_resultatDames.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent arg0) {
+				JframeBracket frame = new JframeBracket(thisframe, t.getAo().get(1)); 
+				thisframe.setVisible(false);
 				}
 			});
 		
 		btn_resultatDoubleMessieurs.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent arg0) {
+				JframeBracket frame = new JframeBracket(thisframe, t.getAo().get(2)); 
+				thisframe.setVisible(false);
+				}
+			});
+		
+		btn_resultatDoubleDames.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent arg0) {
+				JframeBracket frame = new JframeBracket(thisframe, t.getAo().get(3)); 
+				thisframe.setVisible(false);
+				}
+			});
+		btn_resultatDoubleMixte.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent arg0) {
+				JframeBracket frame = new JframeBracket(thisframe, t.getAo().get(4)); 
+				thisframe.setVisible(false);
 				}
 			});
 			
 		btn_commencerTournoi.setBounds(302, 100, 160, 25);
-		btn_resultatMessieurs.setBounds(302, 326, 160, 25);
-		btn_resultatDames.setBounds(302, 364, 160, 25);
-		btn_resultatDoubleMessieurs.setBounds(286, 402, 194, 25);
+		btn_resultatMessieurs.setBounds(302, 325, 160, 25);
+		btn_resultatDames.setBounds(302, 365, 160, 25);
+		btn_resultatDoubleMessieurs.setBounds(282, 405, 200, 25);
+		btn_resultatDoubleDames.setBounds(282, 445, 200, 25);
+		btn_resultatDoubleMixte.setBounds(282, 485, 200, 25);
 		
 		btn_resultatMessieurs.setVisible(false);
 		btn_resultatDames.setVisible(false);
 		btn_resultatDoubleMessieurs.setVisible(false);
+		btn_resultatDoubleDames.setVisible(false);
+		btn_resultatDoubleMixte.setVisible(false);
 		
 		
 		contentPane.add(btn_commencerTournoi);
 		contentPane.add(btn_resultatMessieurs);
 		contentPane.add(btn_resultatDames);
 		contentPane.add(btn_resultatDoubleMessieurs);
-			
+		contentPane.add(btn_resultatDoubleDames);	
+		contentPane.add(btn_resultatDoubleMixte);	
 		
 	}
 }

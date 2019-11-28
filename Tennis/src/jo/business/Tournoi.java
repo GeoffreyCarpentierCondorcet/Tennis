@@ -9,7 +9,10 @@ public class Tournoi {
 	public Tournoi(LocalDateTime date) {	
 		ao.add(new Ordonnancement("messieurs",3, date));
 		ao.add(new Ordonnancement("dames",2, date.plusDays(10)));
-		ao.add(new Ordonnancement("double",2, date.plusDays(10)));		
+		ao.add(new Ordonnancement("doubleMessieurs",2, date.plusDays(10)));	
+		ao.add(new Ordonnancement("doubleDames",2, date.plusDays(10)));	
+		ao.add(new Ordonnancement("doubleMixte",2, date.plusDays(10)));		
+		
 	}
 	
 	public ArrayList<Ordonnancement> getAo() {
@@ -17,14 +20,14 @@ public class Tournoi {
 	}
 	
 	public void startAllBrackets() {
-		int i=1;
+		int i=0;
 		for(Ordonnancement o : ao) {
 			o.startBracket();
 			
 			for(Match m : o.getAm()) {
 				System.out.println(1+i++ + ")  "  + m.getDate() + " | " + m.getDuree() + " | " + m.getCourt().getId() + " | tour n° " + m.getTour());
 			}
-			i=1;			
+			i=0;			
 		}
 	}
 }
