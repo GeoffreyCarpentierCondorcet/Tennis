@@ -120,6 +120,7 @@ public class Ordonnancement {
 		int tour=1;
 		int flag=0; // court et arbitre
 		int compteur=0; // nbr matchs joués
+		int flagzzzz=1;
 		int limite;
 		
 		
