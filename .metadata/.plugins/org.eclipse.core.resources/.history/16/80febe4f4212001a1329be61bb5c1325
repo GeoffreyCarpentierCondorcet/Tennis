@@ -100,8 +100,15 @@ public class Match {
 	}
 	private boolean playSet() {
 		
-		/* generation des jeux tant qu'un joueur n'est pas à 6
-		 * ------------------------------------------------------*/
+		/* generation des jeux tant que c'est pas 6/6
+		 * -------------------------------------------------*/
+		
+		/*while(!(resultatJeux[0][numSet]==6 && resultatJeux[1][numSet]==6)) {
+			if(playJeu()) resultatJeux[0][numSet]++;
+			else resultatJeux[1][numSet]++;
+			if(resultatJeux[0][numSet]>6) return true; // equipe 1 gagne le set
+			if(resultatJeux[1][numSet]>6) return false; // // equipe 2 gagne le set
+		}*/
 		
 		while(resultatJeux[0][numSet]<6 && resultatJeux[1][numSet]<6) {
 			if(playJeu()) resultatJeux[0][numSet]++;
