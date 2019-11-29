@@ -169,7 +169,19 @@ public class Ordonnancement {
 			}
 			
 			while(bracket.hasPrevious()) bracket.previous(); // revenir au debut de l'iterator
+					
+			while(bracket.hasNext()) {
+				System.out.println("tour " + tour + " vainqueur " + flagzzzz++);
+				System.out.println("-------------------------------------");
+				for(Joueur j : bracket.next().getA()) {
+					System.out.print(j.getNom()+ " ");
+				}
+				System.out.println("\n-----------------------------------------------------------------");
+			}
+			while(bracket.hasPrevious()) bracket.previous(); // revenir au debut de l'iterator		
+			
 			tour++;	
-		}	
+		}
+	
 	}
 }
