@@ -1,34 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="btn_top"/>
+		<item key="selection" value="contentPane"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="btn_top"/>
-			<item value="jframetop"/>
-			<item value="x"/>
-			<item value="compteur"/>
-			<item value="compteur++"/>
-			<item value="compteur+="/>
-			<item value="++"/>
-			<item value="absol"/>
-			<item value="setBounds"/>
-			<item value="JframeGroupeA"/>
-			<item value="2"/>
-			<item value="128"/>
-			<item value="sys"/>
-			<item value="sysout"/>
-			<item value="256"/>
+			<item value="contentpane"/>
+			<item value="new"/>
+			<item value="pointsE2"/>
+			<item value="pointsE1"/>
+			<item value="resultatJeux"/>
+			<item value="jeuxE2"/>
+			<item value="jeuxE1"/>
+			<item value="resultatJeux[1][numSet]"/>
+			<item value="resultatJeux[0][numSet]"/>
+			<item value="resultatJeux[numSet]"/>
+			<item value="resultatJeux[0]"/>
+			<item value="resultatJeux[tour][1]"/>
+			<item value="resultatJeux[tour][0]"/>
+			<item value="resultatJeux[tour]"/>
+			<item value="resultatJeux[i]"/>
 		</list>
 		<list key="replacehistory">
-			<item value="JframeGroupe"/>
-			<item value="Arbitre"/>
-			<item value="Personne"/>
-			<item value="Joueur"/>
+			<item value="j"/>
+			<item value="resultatTieBreak[1][numSet]"/>
+			<item value="resultatTieBreak[0][numSet]"/>
+			<item value="resultatTieBreak"/>
+			<item value="resultatJeux[1][numSet]"/>
+			<item value="resultatJeux[0][numSet]"/>
+			<item value="scoreE2"/>
+			<item value="scoreE1"/>
+			<item value="resultatJeux[0]"/>
+			<item value=""/>
+			<item value="resultatJeux[numSet][1]"/>
+			<item value="resultatJeux[numSet][0]"/>
+			<item value="resultatJeux[tour][1]"/>
+			<item value="resultatJeux[tour][0]"/>
+			<item value="resultatJeux[][]"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

@@ -24,25 +24,6 @@ public class JframeBracket extends JFrame {
 
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					messieurs frame = new messieurs();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
-	/**
-	 * Create the frame.
-	 */
 	public JframeBracket(JframeAcceuil frameAcceuil, Ordonnancement o) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
@@ -79,16 +60,15 @@ public class JframeBracket extends JFrame {
 		btn_top.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(o.getAm().size()>64) { // si 128 equipes
-					JframeTop4 frametop4 = new JframeTop4(o.getAm().subList(124, 126), o.getAm().subList(126, 127)); 
+					 JframeGroupe f = new  JframeGroupe(o.getAm().subList(124, 126), o.getAm().subList(126, 127)); 
 				}	
 				else { // si 64 equipes
-					JframeFinalDouble frameFinalDouble = new JframeFinalDouble(o.getAm().get(62)); 
+					 JframeGroupe f = new  JframeGroupe(o.getAm().subList(62, 63)); 
 					
 				}
 			}
 		});
-		
-		
+			
 		if(o.getAm().size()>64) {	// 2 groupes supplémentaires pour les tournois de 128 equipes
 			JButton btn_groupeC = new JButton("groupe C");
 			btn_groupeC.addActionListener(new ActionListener() {
@@ -117,10 +97,6 @@ public class JframeBracket extends JFrame {
 		contentPane.add(btn_groupeB);
 		contentPane.add(btn_top);
 
-		
-		
-		
-		
 		JButton btn_retourAcceuil = new JButton("Acceuil");
 		btn_retourAcceuil.setBounds(635, 25, 97, 25);
 		
@@ -132,7 +108,6 @@ public class JframeBracket extends JFrame {
 		});
 
 		contentPane.add(btn_retourAcceuil);
-		
-			
+					
 	}
 }

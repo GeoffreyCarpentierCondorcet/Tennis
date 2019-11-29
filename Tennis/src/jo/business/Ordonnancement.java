@@ -131,12 +131,10 @@ public class Ordonnancement {
 				am.add(new Match(date,tour, ac.get(flag), nbrSetsGagnants,aa.get(flag++),bracket.next(),bracket.next()));
 				am.get(compteur).playMatch(); // lancement du match
 				
-				if(am.get(compteur).getResultat()[0]>am.get(compteur).getResultat()[1]) { // si E1 gagne
+				if(am.get(compteur).getResultatSets()[0]>am.get(compteur++).getResultatSets()[1]) { // si E1 gagne
 					bracket.remove(); // E2 eluminée
-					System.out.println(compteur + " - " + am.get(compteur).getResultat()[0] + " " + am.get(compteur++).getResultat()[1]);
 				}
 				else { // si E2 gagne
-					System.out.println(compteur + " - " + am.get(compteur).getResultat()[0] + " " + am.get(compteur++).getResultat()[1]);
 					bracket.previous();
 					bracket.remove(); // E1 eluminée 	
 				}
@@ -164,15 +162,14 @@ public class Ordonnancement {
 					// 2 matchs/jour -> 1 match à 8h du mat sur le court 1, et 1 autre à 16h sur le court 2
 					date=date.plusHours(8);
 					if(flag==2) {
-						date=date.plusHours(22); // finale le landemain à 14h sur court 1
+						date=date.plusHours(14); // finale le landemain à 14h sur court 1
 						flag=0;
 					}
 				}	
 			}
 			
 			while(bracket.hasPrevious()) bracket.previous(); // revenir au debut de l'iterator
-			
-			
+					
 			while(bracket.hasNext()) {
 				System.out.println("tour " + tour + " vainqueur " + flagzzzz++);
 				System.out.println("-------------------------------------");
@@ -181,11 +178,9 @@ public class Ordonnancement {
 				}
 				System.out.println("\n-----------------------------------------------------------------");
 			}
-			while(bracket.hasPrevious()) bracket.previous(); // revenir au debut de l'iterator
+			while(bracket.hasPrevious()) bracket.previous(); // revenir au debut de l'iterator		
 			
-			
-			tour++;
-	
+			tour++;	
 		}
 	
 	}

@@ -39,7 +39,7 @@ public class JframeAcceuil extends JFrame {
 	 */
 	public JframeAcceuil() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 808, 628);
+		setBounds(100, 100, 400, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -60,7 +60,7 @@ public class JframeAcceuil extends JFrame {
 					t.startAllBrackets();
 					
 					btn_commencerTournoi.setText("generer un autre tournoi");
-					btn_commencerTournoi.setBounds(282, 100, 200, 25);
+					btn_commencerTournoi.setBounds(92, 100, 200, 25);
 					btn_resultatMessieurs.setVisible(true);
 					btn_resultatDames.setVisible(true);
 					btn_resultatDoubleMessieurs.setVisible(true);
@@ -104,12 +104,12 @@ public class JframeAcceuil extends JFrame {
 				}
 			});
 			
-		btn_commencerTournoi.setBounds(302, 100, 160, 25);
-		btn_resultatMessieurs.setBounds(302, 325, 160, 25);
-		btn_resultatDames.setBounds(302, 365, 160, 25);
-		btn_resultatDoubleMessieurs.setBounds(282, 405, 200, 25);
-		btn_resultatDoubleDames.setBounds(282, 445, 200, 25);
-		btn_resultatDoubleMixte.setBounds(282, 485, 200, 25);
+		btn_commencerTournoi.setBounds(112, 100, 160, 25);
+		btn_resultatMessieurs.setBounds(112, 275, 160, 25);
+		btn_resultatDames.setBounds(112, 315, 160, 25);
+		btn_resultatDoubleMessieurs.setBounds(92, 355, 200, 25);
+		btn_resultatDoubleDames.setBounds(92, 395, 200, 25);
+		btn_resultatDoubleMixte.setBounds(92, 430, 200, 25);
 		
 		btn_resultatMessieurs.setVisible(false);
 		btn_resultatDames.setVisible(false);

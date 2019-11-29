@@ -6,7 +6,9 @@ import java.util.Random;
 
 public class Match {
 	Equipe[] equipe = new Equipe[2];
-	int[] resultat = new int[2];
+	int[] resultatSets = new int[2];
+	int[][] resultatJeux = new int[2][];
+	int[][] resultatTieBreak = new int[2][];
 	Court court;
 	Arbitre arbitre;
 	LocalDateTime date;
@@ -14,6 +16,7 @@ public class Match {
 	int tour;
 	Random r = new Random();
 	int nbrSetsGagnants;
+	int numSet;
 	
 	public Match(LocalDateTime date, int tour, Court court,int nbrSetsGagnants, Arbitre arbitre, Equipe e1, Equipe e2) {
 		this.date = date;
@@ -23,11 +26,22 @@ public class Match {
 		this.arbitre = arbitre;
 		equipe[0] = e1;
 		equipe[1] = e2;
+		resultatJeux[0] = new int[nbrSetsGagnants+2];
+		resultatJeux[1] = new int[nbrSetsGagnants+2];
+		resultatTieBreak[0] = new int[nbrSetsGagnants+1]; // +1 car pas de tie break l dernier set
+		resultatTieBreak[1] = new int[nbrSetsGagnants+1];
 	}
 	
-	public int[] getResultat() {
-		return resultat;
-	}	
+	public int[] getResultatSets() {
+		return resultatSets;
+	}
+	public int[][] getResultatJeux() {
+		return resultatJeux;
+	}
+	public int[][] getResultatTieBreaks() {
+		return resultatTieBreak;
+	}
+	
 	public int getDuree() {
 		return duree;
 	}
@@ -43,11 +57,14 @@ public class Match {
 	public int getTour() {
 		return tour;
 	}
+	public Arbitre getArbitre() {
+		return arbitre;
+	}
 	
 	/* attribution des points, jeux et set :  true -> equipe1 marque, false -> equipe2 marque */
 	
 	private boolean playPoint() { 
-		duree+=r.nextInt(60-10 +1)+10; // 10 à 60 sec par points
+		duree+=r.nextInt(50-10 +1)+10; // 10 à 50 sec par points
 		if(r.nextInt(2)==0) return true; //  equipe 1 marque le point
 		else return false; //  equipe 2 marque le point
 
@@ -82,65 +99,98 @@ public class Match {
 				
 	}
 	private boolean playSet() {
-		int jeuxE1=0;
-		int jeuxE2=0;
 		
 		/* generation des jeux tant que c'est pas 6/6
 		 * -------------------------------------------------*/
 		
-		while(!(jeuxE1==6 && jeuxE2==6)) {
-			if(playJeu()) jeuxE1++;
-			else jeuxE2++;
-			if(jeuxE1>6) return true; // equipe 1 gagne le set
-			if(jeuxE2>6) return false; // // equipe 2 gagne le set
-		}
-				
+		/*while(!(resultatJeux[0][numSet]==6 && resultatJeux[1][numSet]==6)) {
+			if(playJeu()) resultatJeux[0][numSet]++;
+			else resultatJeux[1][numSet]++;
+			if(resultatJeux[0][numSet]>6) return true; // equipe 1 gagne le set
+			if(resultatJeux[1][numSet]>6) return false; // // equipe 2 gagne le set
+		}*/
+		
+		while(resultatJeux[0][numSet]<6 && resultatJeux[1][numSet]<6) {
+			if(playJeu()) resultatJeux[0][numSet]++;
+			else resultatJeux[1][numSet]++;
+		}		
+		/* qd 1des joueurs est à 6 est ce qu'il y'a 2 points d'écart ?
+		 * ---------------------------------------------------------------*/
+		// si oui le set se termine, sinon ça continue
+		
+		if(resultatJeux[0][numSet]-resultatJeux[1][numSet]>=2) return true; // equipe 1 gagne le set
+		else if(resultatJeux[0][numSet]-resultatJeux[1][numSet]<=-2) return false; // equipe 2 gagne le set		
+		
+		/* si score à 6/5 on rejoue
+		 * -------------------------------------------------*/			
+		if (playJeu()) resultatJeux[0][numSet]++;
+		else resultatJeux[1][numSet]++;
+		
+		/* si 2 points d'ecart le set se termine
+		 * -------------------------------------------------*/
+		if(resultatJeux[0][numSet]-resultatJeux[1][numSet]>=2) return true; // equipe 1 gagne le set
+		else if(resultatJeux[0][numSet]-resultatJeux[1][numSet]<=-2) return false; // equipe 2 gagne le set
+		
+		// sinon score à 6/6 ->
+					
 		/* si score à  6/6 et pas dernier set -> tie-break
 		 * -------------------------------------------------*/
-		if(resultat[0]+resultat[1]<nbrSetsGagnants*2-2 ) {		
-			int pointsE1=0;
-			int pointsE2=0;
-
-			/* generation points tant que pas de joueur à 7
-			 * -------------------------------------------------*/
-			while(pointsE1<=7 && pointsE2<=7) {
-				if(playPoint()) pointsE1++;
-				else pointsE2++;
-			}
-			
-			if(pointsE1-pointsE2>=2) return true; // equipe 1 gagne le set
-			else if(pointsE1-pointsE2<=-2) return false; // equipe 2 gagne le set
-			
-			
-			/* si un joueur a 7, generation points tant que pas 2 points d'écart
-			 * --------------------------------------------------------------------*/
-			else {
-				while(pointsE1-pointsE2<2 && pointsE1-pointsE2>-2) {
-					if(playPoint()) pointsE1++;
-					else pointsE2++;
+		if(resultatSets[0]+resultatSets[1]<(nbrSetsGagnants*2)-2 ) {
+			if(playTieBreak()) {
+				resultatJeux[0][numSet]++;
+				return true;
+				
 				}
-				if(pointsE1>pointsE2) return true; // equipe 1 gagne le set
-				else return false;// equipe 2 gagne le set	
+			else {
+				resultatJeux[1][numSet]++;
+				return false;
 			}
 		}
 		
 		/* si score à 6/6 et dernier set -> 2 jeux d'ecart
 		 * -------------------------------------------------*/
 		else { 
-			while(jeuxE1-jeuxE2<2 && jeuxE1-jeuxE2>-2) {
-				if(playJeu()) jeuxE1++;
-				else jeuxE2++;
+			while(resultatJeux[0][numSet]-resultatJeux[1][numSet]<2 && resultatJeux[0][numSet]-resultatJeux[1][numSet]>-2) {
+				if(playJeu()) resultatJeux[0][numSet]++;
+				else resultatJeux[1][numSet]++;
 			}
-			if(jeuxE1>jeuxE2) return true; // equipe 1 gagne le set
+			if(resultatJeux[0][numSet]>resultatJeux[1][numSet]) return true; // equipe 1 gagne le set
 			else return false;// equipe 2 gagne le set	
 		}	
 	}
 	
-	public void playMatch() {
-		while(resultat[0]<nbrSetsGagnants && resultat[1]<nbrSetsGagnants) {
-			if(playSet()) resultat[0]++;
-			else resultat[1]++;
+	private boolean playTieBreak() {
+
+		/* generation points tant que pas de joueur à 7
+		 * -------------------------------------------------*/
+		while(resultatTieBreak[0][numSet]<7 && resultatTieBreak[1][numSet]<7) {
+			if(playPoint()) resultatTieBreak[0][numSet]++;
+			else resultatTieBreak[1][numSet]++;
 		}
-		if (duree>13200) duree = 14400 ; // temps max par match : 3h40 -> 3 matchs/court par jour tt les 4 h j'usqu'en 1/8 eme de finale
+		
+		if(resultatTieBreak[0][numSet]-resultatTieBreak[1][numSet]>=2) return true; // equipe 1 gagne le set
+		else if(resultatTieBreak[0][numSet]-resultatTieBreak[1][numSet]<=-2) return false; // equipe 2 gagne le set
+		
+		
+		/* si un joueur a 7, generation points tant que pas 2 points d'écart
+		 * --------------------------------------------------------------------*/
+		else {
+			while(resultatTieBreak[0][numSet]-resultatTieBreak[1][numSet]<2 && resultatTieBreak[0][numSet]-resultatTieBreak[1][numSet]>-2) {
+				if(playPoint()) resultatTieBreak[0][numSet]++;
+				else resultatTieBreak[1][numSet]++;
+			}
+			if(resultatTieBreak[0][numSet]>resultatTieBreak[1][numSet]) return true; // equipe 1 gagne le set
+			else return false;// equipe 2 gagne le set	
+		
+		}
+	}
+	
+	public void playMatch() {
+		while(resultatSets[0]<nbrSetsGagnants && resultatSets[1]<nbrSetsGagnants) {
+			if(playSet()) resultatSets[0]++;
+			else resultatSets[1]++;
+			numSet++;
+		}
+		if (duree>13200) duree = 13200 ; // temps max par match : 3h40 -> 3 matchs/court par jour tt les 4 h j'usqu'en 1/8 eme de finale
 	}
 }

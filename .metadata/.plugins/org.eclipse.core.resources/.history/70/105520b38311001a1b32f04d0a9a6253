@@ -1,0 +1,139 @@
+package jo.presentation;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+import jo.business.Equipe;
+import jo.business.Match;
+import jo.presentation.JframeGroupe.LabelAdapter;
+
+
+public class JframeTop4 extends JFrame {
+	private JPanel contentPane;
+	
+	private ArrayList<List<Match>> aTours= new ArrayList<List<Match>>();
+	private ArrayList<JLabel> aJLabel = new ArrayList<JLabel>();
+	private int compteur=0;
+	private int w=80;
+	private int h=25;
+	private int i=0;
+	
+	
+	public JframeTop4(List<Match> tour1, List<Match> tour2) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		setVisible(true);
+		
+		aTours.add(tour1);
+		aTours.add(tour2);
+		
+		int x=10; // position
+		int y=60; // position
+		int w=80; 
+		int h=25;  
+		drawTour(aTours.get(0), 10, 60, 5);
+		drawTour(aTours.get(1), 210, 87, 60);
+	}
+	
+	private void drawTour(List<Match> lm, int x, int y, int intervale){	
+		for(Match m :lm) {			
+			for(Equipe e : m.getEquipes()) {
+				if(e.getA().size()==1) {
+					aJLabel.add(new JLabel(e.getA().get(0).getNom(),SwingConstants.CENTER));
+					aJLabel.get(compteur++).setBounds(x, y, w, h);
+					aJLabel.add(new JLabel(m.getResultat()[i++]+"", SwingConstants.CENTER));
+					aJLabel.get(compteur--).setBounds(x+w, y, 20, h);
+					
+				}
+				else {
+					aJLabel.add(new JLabel(e.getA().get(0).getNom() + " / " + e.getA().get(1).getNom(), SwingConstants.CENTER));
+					aJLabel.get(compteur++).setBounds(x, y, w+80, h);
+					aJLabel.add(new JLabel(m.getResultat()[i++]+"", SwingConstants.CENTER));
+					aJLabel.get(compteur--).setBounds(x+w+80, y, 20, h);
+				}
+				aJLabel.get(compteur).setBorder(new LineBorder(new Color(0, 0, 0))); 
+				/*aJLabel.get(compteur).addMouseListener(new MouseAdapter() { // methode anonyme mais alors pas de passage d'objet !
+					public final void mouseEntered(MouseEvent ev) {
+						ev.getComponent().setVisible(false);
+					}
+				});*/
+				aJLabel.get(compteur).addMouseListener(new LabelAdapter(m, x, y, i, 1));
+				compteur++;
+				aJLabel.get(compteur).setBorder(new LineBorder(new Color(0, 0, 0)));
+				aJLabel.get(compteur).addMouseListener(new LabelAdapter(m, x, y, i, 2));
+				compteur--;
+				contentPane.add(aJLabel.get(compteur++));
+				contentPane.add(aJLabel.get(compteur++));
+				y+=25;	
+			}	
+			y+=intervale;
+			i=0;
+		}
+	}
+	private class LabelAdapter extends MouseAdapter {
+		Match m;
+		int x;
+		int y;
+		int i;
+		int etiquette;
+		public LabelAdapter(Match m, int x, int y, int i, int etiquette) {
+			super();
+			this.m = m;
+			this.x = x;
+			this.y = y;
+			this.i = i;
+			this.etiquette=etiquette;
+		}
+		public final void mouseEntered(MouseEvent ev) {
+			String infobulle="";
+			Color c = Color.BLACK;
+			if(etiquette ==1) {
+				LocalDateTime date=LocalDateTime.of(2020, 1, 1, 0, 0);
+				infobulle = "debut : " + m.getDate().format(DateTimeFormatter.ofPattern("dd/MM/YYYY, HH:mm")) + "    duree : " + date.plusSeconds(m.getDuree()).format(DateTimeFormatter.ofPattern("HH:mm"));
+				c = Color.YELLOW;
+			}
+			else {
+				infobulle = "court : " + m.getCourt().getNomCourt() + "    arbitre : " + m.getArbitre().getNom();
+				c = Color.CYAN;
+			}
+			
+			ev.getComponent().setForeground(Color.BLUE);
+			JLabel labelInfos = new JLabel(infobulle, SwingConstants.CENTER);
+			aJLabel.add(labelInfos);
+			if(i==1) labelInfos.setBounds(x+20, y-30, 240, 25);
+			else labelInfos.setBounds(x+20, y-55, 240, 25);
+			labelInfos.setBorder(new LineBorder(new Color(0, 0, 0)));
+			labelInfos.setForeground(Color.BLUE);
+			labelInfos.setBackground(c);
+			labelInfos.setOpaque(true);
+			contentPane.add(labelInfos);
+			setContentPane(contentPane);
+			
+		}
+		public final void mouseExited(MouseEvent ev) {
+			ev.getComponent().setForeground(Color.BLACK);
+			contentPane.remove(aJLabel.get(aJLabel.size()-1));
+			aJLabel.remove(aJLabel.size()-1);
+			setContentPane(contentPane);
+		}
+	}
+}
